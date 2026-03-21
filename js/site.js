@@ -120,9 +120,12 @@ async function loadBlogPosts(blogSlug, listId, titleId, descId, pageTitleId) {
     const blog = manifest.blogs.find(b => b.slug === blogSlug);
 
     if (blog) {
-      document.getElementById(titleId).textContent = `${blog.emoji || ''} ${blog.title}`;
-      document.getElementById(descId).textContent = blog.description || '';
-      document.getElementById(pageTitleId).textContent = `${blog.title} - Adkins Family`;
+      const titleEl = document.getElementById(titleId);
+      const descEl = document.getElementById(descId);
+      const pageTitleEl = document.getElementById(pageTitleId);
+      if (titleEl) titleEl.textContent = `${blog.emoji || ''} ${blog.title}`;
+      if (descEl) descEl.textContent = blog.description || '';
+      if (pageTitleEl) pageTitleEl.textContent = `${blog.title} - Adkins Family`;
     }
 
     const postsResp = await fetch(`posts.json`);
