@@ -24,7 +24,7 @@ body {
   font-family: var(--font-body);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.7;
+  line-height: 1.5;
   min-height: 100vh;
 }
 
@@ -279,11 +279,11 @@ body {
 
 .post-content {
   font-size: 1.05rem;
-  line-height: 1.8;
+  line-height: 1.6;
 }
 
 .post-content p {
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.8rem;
 }
 
 .post-content img {
