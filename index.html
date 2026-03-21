@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adkins Family</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Adkins <span>Family</span></h1>
+    <p class="tagline">Photos &bull; Music &bull; Adventures</p>
+  </header>
+
+  <nav class="site-nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="blogs.html">Blogs</a>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <h1>Welcome</h1>
+      <p>The Adkins family site &mdash; our stories, photos, music, and adventures.</p>
+    </div>
+
+    <div class="blog-list" id="recent-posts">
+      <!-- Recent posts will be loaded here by JS -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Adkins Family
+  </footer>
+
+  <script src="js/site.js"></script>
+  <script>
+    loadRecentPosts('recent-posts', 3);
+  </script>
+</body>
+</html>

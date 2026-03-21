@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adkins Away '26 - Adkins Family</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Adkins <span>Family</span></h1>
+    <p class="tagline">Photos &bull; Music &bull; Adventures</p>
+  </header>
+
+  <nav class="site-nav">
+    <a href="../../index.html">Home</a>
+    <a href="../../blogs.html" class="active">Blogs</a>
+  </nav>
+
+  <main class="main-content">
+    <a href="../../blogs.html" class="back-link">&larr; All Blogs</a>
+
+    <div class="page-header">
+      <h1 id="blog-title">🚐 Adkins Away '26</h1>
+      <p id="blog-description">Our 2026 cross-country RV adventure</p>
+    </div>
+
+    <div class="post-list" id="post-list">
+      <!-- Posts loaded by JS -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    &copy; 2026 Adkins Family
+  </footer>
+
+  <script src="../../js/site.js"></script>
+  <script>
+    loadBlogPosts('adkins-away-26', 'post-list', 'blog-title', 'blog-description', 'page-title');
+  </script>
+</body>
+</html>
