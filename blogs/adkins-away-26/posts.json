@@ -1,3 +1,18 @@
 {
-  "posts": []
+  "posts" : [
+    {
+      "content" : "Made me t to juntura.  81 degrees.  Our air conditioning does not work.  The fan works but compressor will not kick on.  On auto fan everything just shuts off.  ",
+      "date" : "2026-03-21",
+      "excerpt" : "Made me t to juntura.  81 degrees.  Our air conditioning does not work.  The fan works but compressor will not kick on.  On auto fan everything just s...",
+      "images" : [
+        "2026-03-21-day-1-juntura-img1.jpg"
+      ],
+      "location" : "Doniphan, NE",
+      "slug" : "2026-03-21-day-1-juntura",
+      "title" : "Day 1 juntura",
+      "videos" : [
+
+      ]
+    }
+  ]
 }
