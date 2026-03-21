@@ -1,11 +1,8 @@
 /* AdkinsFam Site - JavaScript */
 
-// Determine base path based on current page depth
+// Determine base path - always use absolute path from root
 function getBasePath() {
-  const depth = window.location.pathname.split('/').filter(Boolean).length;
-  if (depth <= 1) return '.';
-  if (depth === 2) return '..';
-  return '../..';
+  return '';
 }
 
 // Format date nicely
@@ -128,7 +125,7 @@ async function loadBlogPosts(blogSlug, listId, titleId, descId, pageTitleId) {
       if (pageTitleEl) pageTitleEl.textContent = `${blog.title} - Adkins Family`;
     }
 
-    const postsResp = await fetch(`posts.json`);
+    const postsResp = await fetch(`/blogs/${blogSlug}/posts.json`);
     const postsData = await postsResp.json();
     const container = document.getElementById(listId);
 
