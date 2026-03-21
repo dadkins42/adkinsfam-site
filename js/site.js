@@ -1,5 +1,11 @@
 /* AdkinsFam Site - JavaScript */
 
+// Cache buster to prevent stale data
+function cacheBust(url) {
+  const separator = url.includes('?') ? '&' : '?';
+  return url + separator + '_t=' + Date.now();
+}
+
 // Determine base path - always use absolute path from root
 function getBasePath() {
   return '';
@@ -22,7 +28,7 @@ async function loadBlogList(containerId) {
   if (!container) return;
 
   try {
-    const resp = await fetch('blogs/manifest.json');
+    const resp = await fetch(cacheBust('blogs/manifest.json'));
     const data = await resp.json();
 
     if (data.blogs.length === 0) {
@@ -47,14 +53,14 @@ async function loadRecentPosts(containerId, limit) {
   if (!container) return;
 
   try {
-    const manifestResp = await fetch('blogs/manifest.json');
+    const manifestResp = await fetch(cacheBust('blogs/manifest.json'));
     const manifest = await manifestResp.json();
 
     let allPosts = [];
 
     for (const blog of manifest.blogs) {
       try {
-        const postsResp = await fetch(`blogs/${blog.slug}/posts.json`);
+        const postsResp = await fetch(cacheBust(`blogs/${blog.slug}/posts.json`));
         const postsData = await postsResp.json();
         postsData.posts.forEach(post => {
           post._blogSlug = blog.slug;
@@ -112,7 +118,7 @@ async function loadRecentPosts(containerId, limit) {
 async function loadBlogPosts(blogSlug, listId, titleId, descId, pageTitleId) {
   try {
     const basePath = getBasePath();
-    const manifestResp = await fetch(`${basePath}/blogs/manifest.json`);
+    const manifestResp = await fetch(cacheBust(`${basePath}/blogs/manifest.json`));
     const manifest = await manifestResp.json();
     const blog = manifest.blogs.find(b => b.slug === blogSlug);
 
@@ -125,7 +131,7 @@ async function loadBlogPosts(blogSlug, listId, titleId, descId, pageTitleId) {
       if (pageTitleEl) pageTitleEl.textContent = `${blog.title} - Adkins Family`;
     }
 
-    const postsResp = await fetch(`/blogs/${blogSlug}/posts.json`);
+    const postsResp = await fetch(cacheBust(`/blogs/${blogSlug}/posts.json`));
     const postsData = await postsResp.json();
     const container = document.getElementById(listId);
 
@@ -199,7 +205,7 @@ function buildArchiveSidebar(posts, blogSlug, containerId) {
 async function loadPost(blogSlug) {
   try {
     const postSlug = window.location.pathname.split('/').pop().replace('.html', '');
-    const postsResp = await fetch('posts.json');
+    const postsResp = await fetch(cacheBust('posts.json'));
     const postsData = await postsResp.json();
     const post = postsData.posts.find(p => p.slug === postSlug);
 
