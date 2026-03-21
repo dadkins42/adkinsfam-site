@@ -159,9 +159,40 @@ async function loadBlogPosts(blogSlug, listId, titleId, descId, pageTitleId) {
         </div>
       `;
     }).join('');
+
+    // Build archive sidebar
+    buildArchiveSidebar(posts, blogSlug, 'post-archive');
   } catch (e) {
     document.getElementById(listId).innerHTML = '<p style="color: var(--text-secondary);">Could not load posts.</p>';
   }
+}
+
+// Build archive sidebar grouped by month
+function buildArchiveSidebar(posts, blogSlug, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container || posts.length === 0) return;
+
+  // Group posts by month
+  const grouped = {};
+  posts.forEach(post => {
+    const date = new Date(post.date + 'T12:00:00');
+    const key = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(post);
+  });
+
+  let html = '';
+  for (const [month, monthPosts] of Object.entries(grouped)) {
+    html += `<details open>
+      <summary>${month}</summary>
+      <ul>`;
+    monthPosts.forEach(post => {
+      html += `<li><a href="${post.slug}.html">${post.title}</a></li>`;
+    });
+    html += `</ul></details>`;
+  }
+
+  container.innerHTML = `<h3>Posts</h3>${html}`;
 }
 
 // Load a single post
