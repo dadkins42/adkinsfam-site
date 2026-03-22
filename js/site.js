@@ -234,13 +234,13 @@ async function loadPost(blogSlug) {
       contentHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
     }
 
-    // Add images
+    // Add images (clickable for lightbox)
     if (post.images && post.images.length > 0) {
       if (post.images.length === 1) {
-        contentHtml += `<img src="${post.images[0]}" alt="${post.title}">`;
+        contentHtml += `<img src="${post.images[0]}" alt="${post.title}" class="lightbox-img" onclick="openLightbox('${post.images[0]}')">`;
       } else {
         contentHtml += '<div class="image-row">';
-        contentHtml += post.images.map(img => `<img src="${img}" alt="${post.title}">`).join('');
+        contentHtml += post.images.map(img => `<img src="${img}" alt="${post.title}" class="lightbox-img" onclick="openLightbox('${img}')">`).join('');
         contentHtml += '</div>';
       }
     }
@@ -271,3 +271,24 @@ async function loadPost(blogSlug) {
     document.getElementById('post-content').innerHTML = '<p>Could not load post.</p>';
   }
 }
+
+// Lightbox
+function openLightbox(src) {
+  const overlay = document.createElement('div');
+  overlay.className = 'lightbox-overlay';
+  overlay.innerHTML = `
+    <span class="lightbox-close">&times;</span>
+    <img src="${src}" class="lightbox-full">
+  `;
+  overlay.addEventListener('click', function() {
+    overlay.remove();
+  });
+  document.body.appendChild(overlay);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const lb = document.querySelector('.lightbox-overlay');
+    if (lb) lb.remove();
+  }
+});
