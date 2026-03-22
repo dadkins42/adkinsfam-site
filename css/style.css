@@ -408,9 +408,10 @@ body {
 /* Hero Section */
 .hero {
   position: relative;
-  width: 100%;
+  width: 100vw;
   max-height: 500px;
   overflow: hidden;
+  margin-left: calc(-50vw + 50%);
 }
 
 .hero-img {
@@ -476,7 +477,7 @@ body {
 /* Photo Mosaic */
 .photo-mosaic {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
 }
 
