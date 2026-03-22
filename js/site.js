@@ -229,9 +229,9 @@ async function loadPost(blogSlug) {
     let contentHtml = '';
 
     if (post.content) {
-      // Convert line breaks to paragraphs
-      const paragraphs = post.content.split('\n\n').filter(p => p.trim());
-      contentHtml = paragraphs.map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+      // Convert line breaks to paragraphs - trim whitespace and filter empties
+      const paragraphs = post.content.split(/\n\s*\n/).filter(p => p.trim());
+      contentHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
     }
 
     // Add images
