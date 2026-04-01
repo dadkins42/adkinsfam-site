@@ -234,13 +234,15 @@ async function loadPost(blogSlug) {
       contentHtml = paragraphs.map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`).join('');
     }
 
-    // Add images (clickable for lightbox)
+    // Add images (clickable for lightbox gallery)
     if (post.images && post.images.length > 0) {
+      // Store images on window for lightbox gallery access
+      window._galleryImages = post.images;
       if (post.images.length === 1) {
-        contentHtml += `<img src="${post.images[0]}" alt="${post.title}" class="lightbox-img" onclick="openLightbox('${post.images[0]}')">`;
+        contentHtml += `<img src="${post.images[0]}" alt="${post.title}" class="lightbox-img" onclick="openLightbox(0)">`;
       } else {
         contentHtml += '<div class="image-row">';
-        contentHtml += post.images.map(img => `<img src="${img}" alt="${post.title}" class="lightbox-img" onclick="openLightbox('${img}')">`).join('');
+        contentHtml += post.images.map((img, i) => `<img src="${img}" alt="${post.title}" class="lightbox-img" onclick="openLightbox(${i})">`).join('');
         contentHtml += '</div>';
       }
     }
@@ -272,23 +274,78 @@ async function loadPost(blogSlug) {
   }
 }
 
-// Lightbox
-function openLightbox(src) {
+// Lightbox Gallery
+let _lightboxIndex = 0;
+
+function openLightbox(index) {
+  const images = window._galleryImages || [];
+  if (images.length === 0) return;
+  _lightboxIndex = index;
+
   const overlay = document.createElement('div');
   overlay.className = 'lightbox-overlay';
+
+  const hasMultiple = images.length > 1;
   overlay.innerHTML = `
     <span class="lightbox-close">&times;</span>
-    <img src="${src}" class="lightbox-full">
+    ${hasMultiple ? '<span class="lightbox-prev">&#8249;</span>' : ''}
+    ${hasMultiple ? '<span class="lightbox-next">&#8250;</span>' : ''}
+    <img src="${images[index]}" class="lightbox-full">
+    ${hasMultiple ? `<span class="lightbox-counter">${index + 1} / ${images.length}</span>` : ''}
   `;
-  overlay.addEventListener('click', function() {
-    overlay.remove();
+
+  // Close when clicking overlay background (not controls or image)
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay || e.target.classList.contains('lightbox-close')) {
+      overlay.remove();
+    }
   });
+
+  if (hasMultiple) {
+    overlay.querySelector('.lightbox-prev').addEventListener('click', function(e) {
+      e.stopPropagation();
+      navigateLightbox(-1);
+    });
+    overlay.querySelector('.lightbox-next').addEventListener('click', function(e) {
+      e.stopPropagation();
+      navigateLightbox(1);
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    overlay.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    overlay.addEventListener('touchend', function(e) {
+      const diff = touchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) > 50) {
+        navigateLightbox(diff > 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  }
+
   document.body.appendChild(overlay);
 }
 
+function navigateLightbox(direction) {
+  const images = window._galleryImages || [];
+  if (images.length <= 1) return;
+
+  _lightboxIndex = (_lightboxIndex + direction + images.length) % images.length;
+
+  const overlay = document.querySelector('.lightbox-overlay');
+  if (!overlay) return;
+
+  const img = overlay.querySelector('.lightbox-full');
+  const counter = overlay.querySelector('.lightbox-counter');
+  if (img) img.src = images[_lightboxIndex];
+  if (counter) counter.textContent = `${_lightboxIndex + 1} / ${images.length}`;
+}
+
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    const lb = document.querySelector('.lightbox-overlay');
-    if (lb) lb.remove();
-  }
+  const lb = document.querySelector('.lightbox-overlay');
+  if (!lb) return;
+  if (e.key === 'Escape') lb.remove();
+  if (e.key === 'ArrowLeft') navigateLightbox(-1);
+  if (e.key === 'ArrowRight') navigateLightbox(1);
 });
