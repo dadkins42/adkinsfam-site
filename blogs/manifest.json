@@ -1,11 +1,18 @@
 {
-  "blogs": [
+  "blogs" : [
     {
-      "slug": "adkins-away-26",
-      "title": "Adkins Away '26",
-      "description": "Our 2026 cross-country RV adventure (click a post title or use the archive on the left to navigate)",
-      "emoji": "🚐",
-      "createdAt": "2026-03-20"
+      "createdAt" : "2026-03-20",
+      "description" : "Our 2026 cross-country RV adventure (click a post title or use the archive on the left to navigate)",
+      "emoji" : "🚐",
+      "slug" : "adkins-away-26",
+      "title" : "Adkins Away '26"
+    },
+    {
+      "createdAt" : "2026-07-22",
+      "description" : "Uggg - updates on our fire situation July 2026",
+      "emoji" : "📝",
+      "slug" : "akawa-butte-fire",
+      "title" : "Akawa Butte Fire"
     }
   ]
 }
